@@ -119,4 +119,4 @@ const styles = StyleSheet.create({});
 export default App;
 
 
-// Update nội dung ngày 04/06/1997
+// Update nội dung ngày
