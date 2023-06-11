@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {Input} from '@rneui/base';
 import React, {useState} from 'react';
 import {
@@ -16,17 +16,35 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
+import auth from '@react-native-firebase/auth';
 const CreatAccount: React.FC = () => {
   const [mood, setMood] = useState('');
-  const [passwordvisible , setpasswordvisible] =useState(true)
-  const [passwordvisible2 , setpasswordvisible2] =useState(true)
-  const navigation = useNavigation()
+  const [passwordvisible, setpasswordvisible] = useState(true);
+  const [passwordvisible2, setpasswordvisible2] = useState(true);
+  const navigation = useNavigation();
+  const [userName, setUserName] = useState('');
+  const [passWord, setPassword] = useState('');
+  const handleSignIn = async () => {
+    try {
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        userName,
+        passWord,
+      );
+      console.log('Tao tai khoan thanh cong', userCredential.user);
+    } catch (error) {
+      console.error('Tao tai khoan that bai', error);
+    }
+  };
   return (
     <View style={{backgroundColor: '#e3decf', flex: 1}}>
       <KeyboardAvoidingView>
         <ScrollView showsVerticalScrollIndicator={false}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <TouchableOpacity style={{width: 50, marginTop: 10}} onPress={() =>{navigation.navigate('LoginScreen' as never)}}>
+            <TouchableOpacity
+              style={{width: 50, marginTop: 10}}
+              onPress={() => {
+                navigation.navigate('LoginScreen' as never);
+              }}>
               <Icon
                 name="angle-left"
                 type="font-awesome"
@@ -101,7 +119,8 @@ const CreatAccount: React.FC = () => {
                       borderColor: 'transparent',
                     }}
                     inputStyle={{fontSize: 15}}
-                    keyboardType='email-address'></Input>
+                    keyboardType="email-address"
+                    onChangeText={setUserName}></Input>
                 </View>
               </View>
               <View>
@@ -116,13 +135,18 @@ const CreatAccount: React.FC = () => {
                     }}
                     inputStyle={{fontSize: 15}}
                     keyboardType="default"
-                    secureTextEntry ={passwordvisible} /* secureTextEntry : giá trị nhập vào bị ẩn đi */
-                    rightIcon ={
-                      <Icon name={passwordvisible ? 'eye-off' : 'eye'} type='material-community'
-                      onPress={() =>setpasswordvisible(!passwordvisible)}
+                    secureTextEntry={
+                      passwordvisible
+                    } /* secureTextEntry : giá trị nhập vào bị ẩn đi */
+                    rightIcon={
+                      <Icon
+                        name={passwordvisible ? 'eye-off' : 'eye'}
+                        type="material-community"
+                        onPress={() => setpasswordvisible(!passwordvisible)}
                       />
                     }
-                    />
+                    onChangeText={setPassword}
+                  />
                 </View>
               </View>
               <View>
@@ -137,15 +161,17 @@ const CreatAccount: React.FC = () => {
                     }}
                     inputStyle={{fontSize: 15}}
                     keyboardType="default"
-                    secureTextEntry ={passwordvisible2}
-                    rightIcon ={
-                      <Icon name={passwordvisible2 ? 'eye-off' : 'eye'} type='material-community'
-                      onPress={() => setpasswordvisible2(!passwordvisible2)} />
-                    }
-                    ></Input>
+                    secureTextEntry={passwordvisible2}
+                    rightIcon={
+                      <Icon
+                        name={passwordvisible2 ? 'eye-off' : 'eye'}
+                        type="material-community"
+                        onPress={() => setpasswordvisible2(!passwordvisible2)}
+                      />
+                    }></Input>
                 </View>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleSignIn}>
                 <View style={styles.creat}>
                   <Text
                     style={{
@@ -160,13 +186,16 @@ const CreatAccount: React.FC = () => {
                 </View>
               </TouchableOpacity>
             </View>
-            <View style ={{flexDirection :'row' , paddingTop: 30 , paddingLeft : 75 }}>
-              <Text
-                style={{color: 'black'}}>
-                Bạn đã có tài khoản ?{' '}
-              </Text>
-              <TouchableOpacity onPress={() =>{navigation.navigate('LoginScreen' as never)}}>
-                <Text style ={{color:'black', fontWeight : '700'}}>Đăng nhập</Text>
+            <View
+              style={{flexDirection: 'row', paddingTop: 30, paddingLeft: 75}}>
+              <Text style={{color: 'black'}}>Bạn đã có tài khoản ? </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('LoginScreen' as never);
+                }}>
+                <Text style={{color: 'black', fontWeight: '700'}}>
+                  Đăng nhập
+                </Text>
               </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>
@@ -204,7 +233,7 @@ const styles = StyleSheet.create({
     height: 45,
     marginHorizontal: 15,
     marginTop: 5,
-    flexDirection : 'row'
+    flexDirection: 'row',
   },
   outter: {
     width: 20,

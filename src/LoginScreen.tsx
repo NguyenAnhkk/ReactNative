@@ -5,6 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  ToastAndroid,
+  Button,
+  Alert
 } from 'react-native';
 import {Input, Image} from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -16,53 +19,93 @@ import * as Yup from 'yup';
 import {SafeAreaView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CreatAccount from './CreatAccount';
+import { getAuth ,createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase/auth';
+import {initializeApp} from 'firebase/app'
+import auth from '@react-native-firebase/auth';
+import Toast from 'react-native-toast-message';
+import { firebase } from '@react-native-firebase/firestore';
 
 const LoginScreen: React.FC = () => {
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const UserName = await AsyncStorage.getItem('UserName');
+  //     // const Password = await AsyncStorage.getItem('Password');
+  //     console.log(UserName /*, Password*/);
+  //     if (UserName /*&& Password*/) {
+  //       setUserName(UserName);
+  //       // setPassWord(Password);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+    // const SignupSchema = Yup.object().shape({
+  //   Account: Yup.string()
+  //     .min(5, 'Kí tự quá ngắn !')
+  //     .max(20, 'Kí tự qua dài !')
+  //     .required('Vui lòng nhập tài khoản !'),
+  //   Password: Yup.string()
+  //     .min(5, 'Kí tự quá ngắn !')
+  //     .max(16, 'Kí tự qua dài !')
+  //     .required('Vui lòng nhập mật khẩu !'),
+  //   email: Yup.string()
+  //     .email('Email không hợp lệ !')
+  //     .required('Vui lòng thử lại !'),
+  // });
+  const [passwordvisible , setpasswordvisible] = useState(true)
   const [userName, setUserName] = useState('');
   const [passWord, setPassWord] = useState('');
-  const [passwordvisible , setpasswordvisible] = useState(true)
-  useEffect(() => {
-    const fetchData = async () => {
-      const UserName = await AsyncStorage.getItem('UserName');
-      // const Password = await AsyncStorage.getItem('Password');
-      console.log(UserName /*, Password*/);
-      if (UserName /*&& Password*/) {
-        setUserName(UserName);
-        // setPassWord(Password);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  let textError: String = ""
+  const LoginWithEmailAndPassword = async (userName, passWord) => {
+    firebase
+    try {
+       const userCredential = await auth().signInWithEmailAndPassword(userName, passWord);
+      const user = userCredential.user;
+      console.log('Đăng nhập thành công:', user);
+      navigation.navigate('DrawerScreen' as never);
+    } catch (error) {
+      console.log('Đăng nhập thất bại:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Đăng nhập thất bại .',
+        text2: 'Tài khoản hoặc mật khẩu không chính xác !',
+      })
+    }
+  } 
   const navigation = useNavigation();
-  const SignupSchema = Yup.object().shape({
-    Account: Yup.string()
-      .min(5, 'Kí tự quá ngắn !')
-      .max(20, 'Kí tự qua dài !')
-      .required('Vui lòng nhập tài khoản !'),
-    Password: Yup.string()
-      .min(5, 'Kí tự quá ngắn !')
-      .max(16, 'Kí tự qua dài !')
-      .required('Vui lòng nhập mật khẩu !'),
-    email: Yup.string()
-      .email('Email không hợp lệ !')
-      .required('Vui lòng thử lại !'),
-  });
+  const checkSubmit = ()=> {
+    if( passWord == null || passWord.trim() == ""){
+      textError = "Vui lòng nhập mật khẩu"
+      return false
+    }else{
+      return true
+    }
+  }
   const handleOnPress = useCallback(async () => {
-    await AsyncStorage.setItem('UserName', userName);
+    // await AsyncStorage.setItem('UserName', userName);
     // await AsyncStorage.setItem('Password', passWord);
-    navigation.navigate('DrawerScreen' as never,{name : 'Anh'} as never);
-  }, [userName /*, passWord*/]);
+    if (checkSubmit()){
+      LoginWithEmailAndPassword(userName, passWord);
+    }else{
+      Toast.show({
+        type: 'success',
+        text1: textError + '',
+        text2: 'Cảm ơn ! 😭'
+      });
+       
+    }
+
+  }, [userName , passWord]);
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Formik
+      <Formik 
         initialValues={{Account: '', Password: '',email :''}}
         validateOnMount ={true}
         onSubmit={values => {
           console.log(values);
         }}
-        validationSchema={SignupSchema}>
+        // validationSchema={SignupSchema}
+        >
         {({errors, touched, values,handleChange,handleBlur,handleSubmit}) => (
           <>
             <View style={styles.container}>
@@ -71,10 +114,11 @@ const LoginScreen: React.FC = () => {
                   <Image
                     borderRadius={50}
                     style={{width: 50, height: 50}}
-                    source={require('../src/assets/wall.jpg')}
+                    source={require('../src/assets/react-native.jpg')}
                   />
                 </Text>
                 <Text style={styles.hitext}>ĐĂNG NHẬP</Text>
+                <Toast />
                 <Text style={styles.hellotext}></Text>
                 <View style={styles.formLogin}>
                   <View style={{marginHorizontal: 50}}>
@@ -97,7 +141,7 @@ const LoginScreen: React.FC = () => {
                         backgroundColor: '#20c7ae',
                         height: 50,
                       }}
-                      onChangeText={text => setUserName(text)}
+                      onChangeText={setUserName}
                       value={userName}
                       inputStyle={{color: '#fff', fontSize: 14}}
                       keyboardType="default"
@@ -130,11 +174,11 @@ const LoginScreen: React.FC = () => {
                         backgroundColor: '#20c7ae',
                         height: 50,
                       }}
-                      // onChangeText={text => setPassWord(text)}
+                      onChangeText={setPassWord}
                       // value={passWord}
-                      onChangeText={handleChange('Password')}
-                      onBlur={handleBlur('Password')}
-                      value={values.Password}
+                      // onChangeText={handleChange('Password')}
+                      // onBlur={handleBlur('Password')}
+                      value={passWord}
                       inputStyle={{color: '#fff', fontSize: 14}}
                       keyboardType="default"
                       secureTextEntry={passwordvisible}
@@ -146,6 +190,7 @@ const LoginScreen: React.FC = () => {
                   style={styles.buttonLongin}
                   onPress={handleOnPress}>
                   <Text style={styles.buttonLoginText}>ĐĂNG NHẬP</Text>
+                      
                 </TouchableOpacity>
                 <View style={styles.action}>
                   <TouchableOpacity style={styles.bottomPassWord}
@@ -235,6 +280,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 50,
     fontWeight: 'bold',
+    paddingTop : 50
   },
   hellotext: {
     color: '#fff',
@@ -339,11 +385,9 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   imgText: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     top: 10,
   },
-  imgName: {},
-  linearGradient: {},
-  buttonText: {},
 });
 export default LoginScreen;
+

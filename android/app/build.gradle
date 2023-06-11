@@ -60,7 +60,7 @@ apply plugin: "com.android.application"
  *   // where to put drawable resources / React Native assets, e.g. the ones you use via
  *   // require('./image.png')), in release mode
  *   resourcesDirRelease: "$buildDir/intermediates/res/merged/release",
- *
+ *packagerdependencies
  *   // by default the gradle tasks are skipped if none of the JS files or assets change; this means
  *   // that we don't look at files in android/ or ios/ to determine whether the tasks are up to
  *   // date; if you have any other folders that you want to ignore for performance reasons (gradle
@@ -74,8 +74,9 @@ apply plugin: "com.android.application"
  *   // supply additional arguments to the packager
  *   extraPackagerArgs: []
  * ]
- */
-
+ */ 
+ apply plugin: 'com.android.application'
+ apply plugin: 'com.google.gms.google-services'
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
 ]
@@ -246,6 +247,8 @@ android {
     }
 }
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     // noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
