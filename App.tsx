@@ -39,6 +39,7 @@ import CreatAccount from './src/CreatAccount';
 import ForGotPassword from './src/ForGotPassword';
 import EnterOTP from './src/EnterOTP';
 import ChangePassword from './src/ChangePassword';
+import ChatScreen from './src/ChatScreen';
 const App = () => {
   const Stack = createNativeStackNavigator();
   return (
@@ -104,6 +105,14 @@ const App = () => {
          <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
+          options={{
+            title: 'Awesome app',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ChatScreen"
+          component={ChatScreen}
           options={{
             title: 'Awesome app',
             headerShown: false,

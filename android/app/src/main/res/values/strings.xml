@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NewProject</string>
+    <string name="facebook_app_id">780673077041031</string>
+    <string name="fb_login_protocol_scheme">fb780673077041031</string>
+    <string name="web_client_id">49615532709-qdrhdrlkc4d31gk9hbpt3blm2cssahto.apps.googleusercontent.com</string>
+    <string name="facebook_client_token"> 9ce0ae401e1e3fdf6873d3832dbe372c</string>
 </resources>

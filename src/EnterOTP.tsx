@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Text} from '@rneui/base';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -14,10 +14,10 @@ import EnterOTPSVG from './assets/EnterOTPSVG';
 import {ScrollView} from 'react-native-gesture-handler';
 const EnterOTP: React.FC = () => {
   const navigation = useNavigation();
-  const firstInput = useRef(null);
-  const secondInput = useRef(null);
-  const thirdInput = useRef(null);
-  const fourthInput = useRef(null);
+  const firstInput = useRef<TextInput>(null);
+  const secondInput = useRef<TextInput>(null);
+  const thirdInput = useRef<TextInput>(null);
+  const fourthInput = useRef<TextInput>(null);
   return (
     <View style={{backgroundColor: '#e3decf', flex: 1}}>
       <KeyboardAvoidingView>
@@ -43,7 +43,7 @@ const EnterOTP: React.FC = () => {
                 maxLength={1}
                 ref={firstInput}
                 onChangeText={text => {
-                  text && secondInput.current.focus();
+                  text && secondInput?.current?.focus();
                 }}
               />
             </View>
@@ -55,8 +55,8 @@ const EnterOTP: React.FC = () => {
                 ref={secondInput}
                 onChangeText={text => {
                   text
-                    ? thirdInput.current.focus()
-                    : firstInput.current.focus();
+                    ? thirdInput?.current?.focus()
+                    : firstInput?.current?.focus();
                 }}
               />
             </View>
@@ -68,8 +68,8 @@ const EnterOTP: React.FC = () => {
                 ref={thirdInput}
                 onChangeText={text => {
                   text
-                    ? fourthInput.current.focus()
-                    : secondInput.current.focus();
+                    ? fourthInput?.current?.focus()
+                    : secondInput?.current?.focus();
                 }}
               />
             </View>
@@ -81,8 +81,8 @@ const EnterOTP: React.FC = () => {
                 ref={fourthInput}
                 onChangeText={text => {
                   text
-                    ? fourthInput.current.focus()
-                    : thirdInput.current.focus();
+                    ? fourthInput?.current?.focus()
+                    : thirdInput?.current?.focus();
                 }}
               />
             </View>

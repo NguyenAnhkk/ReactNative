@@ -13,6 +13,8 @@ import {color} from '@rneui/base';
 import SupportScreen from './SupportScreen';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ChatScreen from './ChatScreen';
+import UserScreen from './UserScreen';
 // import 'react-native-gesture-handler';
 const DrawerScreen: React.FC = () => {
   const Drawer = createDrawerNavigator();
@@ -69,6 +71,15 @@ const DrawerScreen: React.FC = () => {
         options={{
           drawerIcon: ({color}) => (
             <Icon name="face-agent" type="material-community" color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={UserScreen}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="message-processing-outline" type="material-community" color={color} />
           ),
         }}
       />

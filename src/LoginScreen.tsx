@@ -1,65 +1,84 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  ToastAndroid,
-  Button,
-  Alert
-} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+
 import {Input, Image} from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {Field, Formik} from 'formik';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import * as Yup from 'yup';
 import {SafeAreaView} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import CreatAccount from './CreatAccount';
-import { getAuth ,createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase/auth';
-import {initializeApp} from 'firebase/app'
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider, 
+  signInWithPopup,
+  Auth,
+} from 'firebase/auth';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-toast-message';
-import { firebase } from '@react-native-firebase/firestore';
+import {firebase} from '@react-native-firebase/firestore';
+import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {requestUserPermission, NotificationListner} from "./untils/pushnotification_helper"
 
 const LoginScreen: React.FC = () => {
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const UserName = await AsyncStorage.getItem('UserName');
-  //     // const Password = await AsyncStorage.getItem('Password');
-  //     console.log(UserName /*, Password*/);
-  //     if (UserName /*&& Password*/) {
-  //       setUserName(UserName);
-  //       // setPassWord(Password);
-  //     }
-  //   };
+  const [useData , setUserData] = useState({})
+useEffect(() =>{
+  GoogleSignin.configure({
+    offlineAccess :true,
+    forceCodeForRefreshToken :true,
+    webClientId:
+      '49615532709-p97279sviiolnruoqt9dnjhu6o2kcegk.apps.googleusercontent.com',
+      
+  });
+},[])
+useEffect(() =>{
+  requestUserPermission();
+  NotificationListner();
+},[])
 
-  //   fetchData();
-  // }, []);
-    // const SignupSchema = Yup.object().shape({
-  //   Account: Yup.string()
-  //     .min(5, 'Kí tự quá ngắn !')
-  //     .max(20, 'Kí tự qua dài !')
-  //     .required('Vui lòng nhập tài khoản !'),
-  //   Password: Yup.string()
-  //     .min(5, 'Kí tự quá ngắn !')
-  //     .max(16, 'Kí tự qua dài !')
-  //     .required('Vui lòng nhập mật khẩu !'),
-  //   email: Yup.string()
-  //     .email('Email không hợp lệ !')
-  //     .required('Vui lòng thử lại !'),
-  // });
-  const [passwordvisible , setpasswordvisible] = useState(true)
+
+const GoogleSignIn = () => {
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged((user) => {
+      if (user) {
+        // Đăng nhập thành công, thực hiện các thao tác khác
+        Alert.alert('Đăng nhập thành công!');
+      }
+    });
+  
+
+    return subscriber; // Hủy đăng ký khi component unmount
+  }, []);
+}
+
+const signIn = async () => {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const { idToken } = await GoogleSignin.signIn();
+
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    await auth().signInWithCredential(googleCredential);
+  } catch (error) {
+    console.log(error);
+    console.log('Loi')
+  }
+};
+
+
+
+  const [passwordvisible, setpasswordvisible] = useState(true);
   const [userName, setUserName] = useState('');
   const [passWord, setPassWord] = useState('');
-  let textError: String = ""
+  let textError: String = '';
   const LoginWithEmailAndPassword = async (userName, passWord) => {
-    firebase
+    firebase;
     try {
-       const userCredential = await auth().signInWithEmailAndPassword(userName, passWord);
+      const userCredential = await auth().signInWithEmailAndPassword(
+        userName,
+        passWord,
+      );
       const user = userCredential.user;
       console.log('Đăng nhập thành công:', user);
       navigation.navigate('DrawerScreen' as never);
@@ -69,44 +88,86 @@ const LoginScreen: React.FC = () => {
         type: 'error',
         text1: 'Đăng nhập thất bại .',
         text2: 'Tài khoản hoặc mật khẩu không chính xác !',
-      })
+      });
     }
-  } 
+  };
   const navigation = useNavigation();
-  const checkSubmit = ()=> {
-    if( passWord == null || passWord.trim() == ""){
-      textError = "Vui lòng nhập mật khẩu"
-      return false
-    }else{
-      return true
+  const checkSubmit = () => {
+    if (passWord == null || passWord.trim() == '') {
+      textError = 'Vui lòng nhập mật khẩu';
+      return false;
+    } else {
+      return true;
     }
-  }
+  };
   const handleOnPress = useCallback(async () => {
     // await AsyncStorage.setItem('UserName', userName);
     // await AsyncStorage.setItem('Password', passWord);
-    if (checkSubmit()){
+    if (checkSubmit()) {
       LoginWithEmailAndPassword(userName, passWord);
-    }else{
+    } else {
       Toast.show({
         type: 'success',
         text1: textError + '',
-        text2: 'Cảm ơn ! 😭'
+        text2: 'Cảm ơn ! 😭',
       });
-       
     }
+  }, [userName, passWord]);
 
-  }, [userName , passWord]);
+  const onFacebookButtonPress = async () => {
+    try {
+      // Yêu cầu quyền truy cập từ người dùng
+      const result = await LoginManager.logInWithPermissions([
+        'public_profile',
+        'email',
+      ]);
+
+      // Kiểm tra nếu người dùng hủy đăng nhập
+      if (result.isCancelled) {
+        throw 'User cancelled the login process';
+      }
+      // Lấy thông tin access token
+      const data = await AccessToken.getCurrentAccessToken();
+      // Kiểm tra nếu không lấy được access token
+      if (!data) {
+        throw 'Something went wrong obtaining access token';
+      }
+      // Tạo credential từ access token
+      const facebookCredential = auth.FacebookAuthProvider.credential(
+        data.accessToken,
+      );
+      // Đăng nhập vào Firebase sử dụng credential
+      
+      const userCredential = await auth().signInWithCredential(
+        facebookCredential,
+      );
+      navigation.navigate('DrawerScreen' as never)
+      // In thông tin người dùng đã đăng nhập thành công
+      console.log('Logged in with Facebook!', userCredential.user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Formik 
-        initialValues={{Account: '', Password: '',email :''}}
-        validateOnMount ={true}
+      <Formik
+        initialValues={{Account: '', Password: '', email: ''}}
+        validateOnMount={true}
         onSubmit={values => {
           console.log(values);
         }}
         // validationSchema={SignupSchema}
-        >
-        {({errors, touched, values,handleChange,handleBlur,handleSubmit}) => (
+      >
+        {({
+          errors,
+          touched,
+          values,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+        }) => (
           <>
             <View style={styles.container}>
               <LinearGradient colors={['#f0a5d3', '#f5edf2']} style={{flex: 1}}>
@@ -115,7 +176,7 @@ const LoginScreen: React.FC = () => {
                     borderRadius={50}
                     style={{width: 50, height: 50}}
                     source={require('../src/assets/react-native.jpg')}
-                  />
+                  /> 
                 </Text>
                 <Text style={styles.hitext}>ĐĂNG NHẬP</Text>
                 <Toast />
@@ -132,6 +193,7 @@ const LoginScreen: React.FC = () => {
                       placeholder="Nhập tài khoản"
                       leftIcon={{
                         type: 'material-community',
+                        
                         name: 'account-arrow-right',
                         size: 25,
                         color: '#fff',
@@ -162,11 +224,15 @@ const LoginScreen: React.FC = () => {
                         type: 'font-awesome',
                         name: 'lock',
                         color: '#fff',
-                        size : 20
+                        size: 20,
                       }}
                       rightIcon={
-                        <Icon name ={passwordvisible ? 'eye-slash' : 'eye'} size={20} color={'#fff'}
-                        onPress={() =>setpasswordvisible(!passwordvisible)}/>
+                        <Icon
+                          name={passwordvisible ? 'eye-slash' : 'eye'}
+                          size={20}
+                          color={'#fff'}
+                          onPress={() => setpasswordvisible(!passwordvisible)}
+                        />
                       }
                       containerStyle={{
                         borderRadius: 20,
@@ -181,20 +247,31 @@ const LoginScreen: React.FC = () => {
                       value={passWord}
                       inputStyle={{color: '#fff', fontSize: 14}}
                       keyboardType="default"
-                      secureTextEntry={passwordvisible}
-                    ></Input>
-                  {(errors.Password && touched.Password)&&<Text style={{fontSize : 14 , color : 'red',fontWeight :'bold',marginTop : 5}}>{errors.Password}</Text>}
+                      secureTextEntry={passwordvisible}></Input>
+                    {errors.Password && touched.Password && (
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color: 'red',
+                          fontWeight: 'bold',
+                          marginTop: 5,
+                        }}>
+                        {errors.Password}
+                      </Text>
+                    )}
                   </View>
                 </View>
                 <TouchableOpacity
                   style={styles.buttonLongin}
                   onPress={handleOnPress}>
                   <Text style={styles.buttonLoginText}>ĐĂNG NHẬP</Text>
-                      
                 </TouchableOpacity>
                 <View style={styles.action}>
-                  <TouchableOpacity style={styles.bottomPassWord}
-                  onPress={() =>{navigation.navigate('ForGotPassword' as never)}}>
+                  <TouchableOpacity
+                    style={styles.bottomPassWord}
+                    onPress={() => {
+                      navigation.navigate('ForGotPassword' as never);
+                    }}>
                     <Text
                       style={[
                         styles.passWordText,
@@ -203,9 +280,11 @@ const LoginScreen: React.FC = () => {
                       QUÊN MẬT KHẨU
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.buttomOutLogin}
-                  onPress={() =>navigation.navigate('CreatAccount' as never )}
-                  >
+                  <TouchableOpacity
+                    style={styles.buttomOutLogin}
+                    onPress={() =>
+                      navigation.navigate('CreatAccount' as never)
+                    }>
                     <Text
                       style={[
                         styles.outLogin,
@@ -217,7 +296,9 @@ const LoginScreen: React.FC = () => {
                 </View>
                 <View style={styles.content}>
                   <View>
-                    <TouchableOpacity style={styles.SignFb}>
+                    <TouchableOpacity
+                      style={styles.SignFb}
+                      onPress={onFacebookButtonPress}>
                       <View style={{flexDirection: 'row'}}>
                         <Icon name={'facebook'} size={30} color={'#247bed'} />
                         <Text
@@ -231,7 +312,9 @@ const LoginScreen: React.FC = () => {
                         </Text>
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.SignGg}>
+                    <TouchableOpacity
+                      style={styles.SignGg}
+                      onPress={signIn}>
                       <View style={{flexDirection: 'row'}}>
                         <Icon name={'google'} size={30} color={'#e6358d'} />
                         <Text
@@ -252,9 +335,6 @@ const LoginScreen: React.FC = () => {
           </>
         )}
       </Formik>
-      <>
-        <Text style={{backgroundColor: 'black'}}>Login</Text>
-      </>
     </SafeAreaView>
   );
 };
@@ -280,7 +360,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 50,
     fontWeight: 'bold',
-    paddingTop : 50
+    paddingTop: 50,
   },
   hellotext: {
     color: '#fff',
@@ -390,4 +470,7 @@ const styles = StyleSheet.create({
   },
 });
 export default LoginScreen;
+function alert(arg0: string) {
+  throw new Error('Function not implemented.');
+}
 

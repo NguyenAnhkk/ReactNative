@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "49615532709",
+    "firebase_url": "https://nguyenanh-100304-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "nguyenanh-100304",
     "storage_bucket": "nguyenanh-100304.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "49615532709-snnkrkklbsmt4pp1soknj9qo037a4ji2.apps.googleusercontent.com",
+          "client_id": "49615532709-45qrmmla2118d7htmdlhmmp84mei2stv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.newproject",
+            "certificate_hash": "c9d40f4bbcf857199c78ec73ea176217efbe506e"
+          }
+        },
+        {
+          "client_id": "49615532709-p97279sviiolnruoqt9dnjhu6o2kcegk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "49615532709-snnkrkklbsmt4pp1soknj9qo037a4ji2.apps.googleusercontent.com",
+              "client_id": "49615532709-9phfa6if0mriferc9r2n2dqjpca6nr4h.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

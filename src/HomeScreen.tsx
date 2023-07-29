@@ -10,7 +10,6 @@ import {
   View,
   Alert,
 } from 'react-native';
-
 import {Divider, Icon} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import LinearGradient from 'react-native-linear-gradient';
@@ -22,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type ItemProps = {title: string};
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
+  
   const handleOnPress = (name: string, tacgia: string) =>
     navigation.navigate(
       'DetailScreen' as never,
@@ -106,16 +106,7 @@ const HomeScreen: React.FC = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <LinearGradient colors={['#f5edf2', '#f0a5d3']} style={{flex: 1}}>
-        {/* <TouchableOpacity onPress={() => navigation.navigate('LoginScreen' as never)} style ={{width : 50, paddingTop : 20
-        }}>
-          <Icon
-            name="angle-left"
-            type="font-awesome"
-            color={'#000'}
-            size={35}
-            style={{paddingLeft: 5}}
-          />
-        </TouchableOpacity> */}
+
         <View style={styles.container}>
           <TextInput
             value={comic}
@@ -258,6 +249,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
+  },
+  texttitle: {
+    fontSize: 25,
+    color: 'black',
+    textAlign: 'center',
+    fontWeight: '500',
   },
   inputStyle: {fontSize: 16},
   labelStyle: {fontSize: 14},

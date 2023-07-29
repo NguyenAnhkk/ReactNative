@@ -16,16 +16,12 @@ import {Icon} from 'react-native-elements';
 const ProfileScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#f5edf2', '#f0a5d3']} style={{flex: 1}}>
+      <View  style={{flex: 1}}>
         <View style={styles.UserInforSection}>
           <View
             style={
               {flexDirection: 'row'} /* Mặc định thì thẻ View nằm dọc , chỉnh để nằm ngang */
             }>
-            <Image
-              style={styles.Avatar}
-              source={require('../src/assets/Profile.jpg')}
-            />
             <View style={{marginLeft: 20, paddingTop: 20}}>
               <Text style={styles.title}>Nguyễn Ngọc Anh</Text>
               <Text style={styles.caption}> Code mobile</Text>
@@ -56,7 +52,7 @@ const ProfileScreen: React.FC = () => {
             </Text>
           </View>
         </View>
-      </LinearGradient>
+      </View>
     </SafeAreaView>
   );
 };
