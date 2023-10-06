@@ -6,6 +6,7 @@ project.ext {
       // Overriding Build/Android SDK Versions
       android : [
         minSdk    : 19,
+        
         targetSdk : 33,
         compileSdk: 33,
       ],

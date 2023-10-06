@@ -11,63 +11,56 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  GoogleAuthProvider, 
+  GoogleAuthProvider,
   signInWithPopup,
   Auth,
 } from 'firebase/auth';
+
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-toast-message';
 import {firebase} from '@react-native-firebase/firestore';
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {requestUserPermission, NotificationListner} from "./untils/pushnotification_helper"
-
-const LoginScreen: React.FC = () => {
-  const [useData , setUserData] = useState({})
-useEffect(() =>{
-  GoogleSignin.configure({
-    offlineAccess :true,
-    forceCodeForRefreshToken :true,
-    webClientId:
-      '49615532709-p97279sviiolnruoqt9dnjhu6o2kcegk.apps.googleusercontent.com',
-      
-  });
-},[])
-useEffect(() =>{
-  requestUserPermission();
-  NotificationListner();
-},[])
-
-
-const GoogleSignIn = () => {
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((user) => {
-      if (user) {
-        // Đăng nhập thành công, thực hiện các thao tác khác
-        Alert.alert('Đăng nhập thành công!');
-      }
-    });
-  
-
-    return subscriber; // Hủy đăng ký khi component unmount
-  }, []);
-}
-
-const signIn = async () => {
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {
+  requestUserPermission,
+  NotificationListner,
+} from './untils/pushnotification_helper';
+GoogleSignin.configure({
+  webClientId:
+    '49615532709-fc66fbc1v7ba1107816h6be26nuoleea.apps.googleusercontent.com',
+});
+const handleGoogleSignIn = async () => {
   try {
-    await GoogleSignin.hasPlayServices();
-    const { idToken } = await GoogleSignin.signIn();
-
+    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    await auth().signInWithCredential(googleCredential);
-  } catch (error) {
-    console.log(error);
-    console.log('Loi')
+    return auth().signInWithCredential(googleCredential);
+    // Đăng nhập vào Firebase
+  } catch (error: any) {
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      // user cancelled the login flow
+      console.log(statusCodes.SIGN_IN_CANCELLED);
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      // operation (e.g. sign in) is in progress already
+      console.log(statusCodes.IN_PROGRESS);
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      // play services not available or outdated
+      console.log(statusCodes.PLAY_SERVICES_NOT_AVAILABLE);
+    } else {
+      // some other error happened
+      console.log(error);
+    }
   }
 };
-
-
-
+const LoginScreen: React.FC = () => {
+  useEffect(() => {
+    requestUserPermission();
+    NotificationListner();
+  }, []);
   const [passwordvisible, setpasswordvisible] = useState(true);
   const [userName, setUserName] = useState('');
   const [passWord, setPassWord] = useState('');
@@ -109,7 +102,7 @@ const signIn = async () => {
       Toast.show({
         type: 'success',
         text1: textError + '',
-        text2: 'Cảm ơn ! 😭',
+        text2: 'Cảm ơn !',
       });
     }
   }, [userName, passWord]);
@@ -137,18 +130,17 @@ const signIn = async () => {
         data.accessToken,
       );
       // Đăng nhập vào Firebase sử dụng credential
-      
+
       const userCredential = await auth().signInWithCredential(
         facebookCredential,
       );
-      navigation.navigate('DrawerScreen' as never)
+      navigation.navigate('DrawerScreen' as never);
       // In thông tin người dùng đã đăng nhập thành công
       console.log('Logged in with Facebook!', userCredential.user);
     } catch (error) {
       console.error(error);
     }
   };
-
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -163,10 +155,6 @@ const signIn = async () => {
         {({
           errors,
           touched,
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
         }) => (
           <>
             <View style={styles.container}>
@@ -176,7 +164,7 @@ const signIn = async () => {
                     borderRadius={50}
                     style={{width: 50, height: 50}}
                     source={require('../src/assets/react-native.jpg')}
-                  /> 
+                  />
                 </Text>
                 <Text style={styles.hitext}>ĐĂNG NHẬP</Text>
                 <Toast />
@@ -193,7 +181,7 @@ const signIn = async () => {
                       placeholder="Nhập tài khoản"
                       leftIcon={{
                         type: 'material-community',
-                        
+
                         name: 'account-arrow-right',
                         size: 25,
                         color: '#fff',
@@ -296,38 +284,35 @@ const signIn = async () => {
                 </View>
                 <View style={styles.content}>
                   <View>
-                    <TouchableOpacity
-                      style={styles.SignFb}
-                      onPress={onFacebookButtonPress}>
-                      <View style={{flexDirection: 'row'}}>
-                        <Icon name={'facebook'} size={30} color={'#247bed'} />
-                        <Text
-                          style={{
-                            fontSize: 17,
-                            paddingHorizontal: 20,
-                            paddingTop: 5,
-                            color: '#247bed',
-                          }}>
-                          Sign in with Facebook
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.SignGg}
-                      onPress={signIn}>
-                      <View style={{flexDirection: 'row'}}>
-                        <Icon name={'google'} size={30} color={'#e6358d'} />
-                        <Text
-                          style={{
-                            fontSize: 17,
-                            paddingHorizontal: 20,
-                            paddingTop: 5,
-                            color: '#e6358d',
-                          }}>
-                          Sign in with Google
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
+                    <View style={{alignItems: 'center'}}>
+                      <TouchableOpacity
+                        style={styles.SignFb}
+                        onPress={onFacebookButtonPress}>
+                        <View style={{flexDirection: 'row'}}>
+                          <Icon name={'facebook'} size={25} color={'#247bed'} />
+                          <Text
+                            style={{
+                              fontSize: 17,
+                              paddingHorizontal: 20,
+
+                              color: '#247bed',
+                            }}>
+                            Sign in with Facebook
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{alignItems: 'center', marginTop: 20}}>
+                      <GoogleSigninButton
+                        style={{
+                          width: 250,
+                          height: 50,
+                        }}
+                        size={GoogleSigninButton.Size.Wide}
+                        color={GoogleSigninButton.Color.Dark}
+                        onPress={handleGoogleSignIn}
+                      />
+                    </View>
                   </View>
                 </View>
               </LinearGradient>
@@ -413,23 +398,13 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   SignFb: {
-    height: 50,
+    height: 45,
+    width: 250,
     backgroundColor: '#abeaff',
-    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 50,
-    marginBottom: 20,
   },
-  SignGg: {
-    height: 50,
-    backgroundColor: '#f5abc9',
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 50,
-    marginBottom: 20,
-  },
+
   signup: {
     marginTop: 10,
     marginHorizontal: 0,
@@ -473,4 +448,3 @@ export default LoginScreen;
 function alert(arg0: string) {
   throw new Error('Function not implemented.');
 }
-

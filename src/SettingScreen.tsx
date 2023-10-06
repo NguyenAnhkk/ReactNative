@@ -1,11 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Input, Image} from '@rneui/themed';
+import { useTheme } from './ThemeContext';
 const SettingScreen: React.FC = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+  const styles = isDarkMode ? darkStyles : lightStyles;
   return (
-    <View>
-      <Text style ={{fontSize : 20,color : 'red' ,textAlign : 'center'}}>Đang trong quá trình update code setting</Text>
+   <View style={styles.container}>
+      <Text style={styles.text}>Hello, World!</Text>
+      <TouchableOpacity onPress={toggleTheme} style={styles.toggleButton}>
+        <Text style={styles.toggleButtonText}>
+          {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
+const darkStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#262626',
+  },
+  text: {
+    fontSize: 24,
+    color: 'white',
+  },
+  toggleButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'orange',
+    borderRadius: 5,
+  },
+  toggleButtonText: {
+    color: 'black',
+  },
+});
+const lightStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  text: {
+    fontSize: 24,
+    color: 'black',
+  },
+  toggleButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'blue',
+    borderRadius: 5,
+  },
+  toggleButtonText: {
+    color: 'white',
+  },
+});
 export default SettingScreen

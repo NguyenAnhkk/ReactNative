@@ -75,7 +75,7 @@ apply plugin: "com.android.application"
  *   extraPackagerArgs: []
  * ]
  */ 
- apply plugin: 'com.android.application'
+ apply plugin:"com.facebook.react"
  apply plugin: 'com.google.gms.google-services'
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
@@ -134,13 +134,14 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
+        
         applicationId "com.newproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-
+        missingDimensionStrategy 'react-native-camera', 'general'
         if (isNewArchitectureEnabled()) {
             // We configure the CMake build only if you decide to opt-in for the New Architecture.
             externalNativeBuild {
@@ -250,6 +251,7 @@ repositories {
         mavenCentral()
     }
 dependencies {
+    implementation project(':react-native-fs')
     implementation 'com.google.gms:google-services:4.3.10'
     implementation platform('com.google.firebase:firebase-bom:32.1.1')
     implementation 'com.google.firebase:firebase-analytics'
@@ -258,6 +260,8 @@ dependencies {
     // noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-vector-icons')
+    
+    implementation project(':react-native-reanimated')
     // implementation project(':react-native-fbsdk-next') //lỗi
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"

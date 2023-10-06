@@ -6,19 +6,20 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawer from './CustomDrawer';
 import HomeScreen from './HomeScreen';
-import LoginScreen from './LoginScreen';
+
 import ProfileScreen from './ProfileScreen';
 import SettingScreen from './SettingScreen';
-import {color} from '@rneui/base';
+
 import SupportScreen from './SupportScreen';
-import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import ChatScreen from './ChatScreen';
-import UserScreen from './UserScreen';
+import {useNavigation} from '@react-navigation/native';
+
+import CameraScreen from './CameraScreen';
+import VideoScreen from './VideoScreen';
+import QRCodeScreen from './QRCodeScreen';
 // import 'react-native-gesture-handler';
 const DrawerScreen: React.FC = () => {
   const Drawer = createDrawerNavigator();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <Drawer.Navigator
       drawerContent={(props: any) => <CustomDrawer {...props} />}
@@ -26,13 +27,13 @@ const DrawerScreen: React.FC = () => {
         headerShown: false,
         drawerActiveBackgroundColor: '#c52bd6',
         drawerActiveTintColor: '#fff',
-      
+
         drawerInactiveTintColor: '#000',
         drawerLabelStyle: {
           marginLeft: -20,
           fontSize: 15,
           fontFamily: 'Roboto-Medium',
-        }
+        },
       }}>
       <Drawer.Screen
         name="Home"
@@ -75,15 +76,44 @@ const DrawerScreen: React.FC = () => {
         }}
       />
       <Drawer.Screen
-        name="Chat"
-        component={UserScreen}
+        name="Camera"
+        component={CameraScreen}
         options={{
           drawerIcon: ({color}) => (
-            <Icon name="message-processing-outline" type="material-community" color={color} />
+            <Icon
+              name="camera"
+              type="material-community"
+              color={color}
+            />
           ),
         }}
       />
-       
+       <Drawer.Screen
+        name="Video"
+        component={VideoScreen}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon
+              name="video"
+              type="material-community"
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="QRCode"
+        component={QRCodeScreen}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon
+              name="qrcode-scan"
+              type="material-community"
+              color={color}
+            />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 };

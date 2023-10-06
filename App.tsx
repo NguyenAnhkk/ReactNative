@@ -40,6 +40,7 @@ import ForGotPassword from './src/ForGotPassword';
 import EnterOTP from './src/EnterOTP';
 import ChangePassword from './src/ChangePassword';
 import ChatScreen from './src/ChatScreen';
+import { ThemeProvider } from './src/ThemeContext';
 const App = () => {
   const Stack = createNativeStackNavigator();
   return (

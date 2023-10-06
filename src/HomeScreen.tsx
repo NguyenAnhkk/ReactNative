@@ -22,7 +22,7 @@ type ItemProps = {title: string};
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
   
-  const handleOnPress = (name: string, tacgia: string) =>
+  const handleOnPress  = (name: string, tacgia: string) =>
     navigation.navigate(
       'DetailScreen' as never,
       {name: name, tacgia: tacgia} as never,
@@ -61,9 +61,7 @@ const HomeScreen: React.FC = () => {
   );
 
   const [comic, setComic] = useState('');
-  function alert(arg0: string) {
-    throw new Error('Function not implemented.');
-  }
+ 
   const [categories, setCategories] = useState([
     {
       name: 'Doreamon',

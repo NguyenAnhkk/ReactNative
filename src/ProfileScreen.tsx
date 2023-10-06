@@ -1,17 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  ImageBackground,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import {Input, Image} from '@rneui/themed';
+import { useTheme } from './ThemeContext';
 import {
-  SafeAreaFrameContext,
   SafeAreaView,
 } from 'react-native-safe-area-context';
-import LinearGradient from 'react-native-linear-gradient';
 import {Icon} from 'react-native-elements';
 const ProfileScreen: React.FC = () => {
   return (
@@ -23,8 +19,7 @@ const ProfileScreen: React.FC = () => {
               {flexDirection: 'row'} /* Mặc định thì thẻ View nằm dọc , chỉnh để nằm ngang */
             }>
             <View style={{marginLeft: 20, paddingTop: 20}}>
-              <Text style={styles.title}>Nguyễn Ngọc Anh</Text>
-              <Text style={styles.caption}> Code mobile</Text>
+              <Text style={styles.title}>Nguyen Anh</Text>
             </View>
           </View>
         </View>
@@ -96,4 +91,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
   }
 });
+
 export default ProfileScreen;
