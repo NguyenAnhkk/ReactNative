@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import * as React from 'react';
 import {
   KeyboardAvoidingView,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+
 import {Icon, Input} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import {TouchEventType} from 'react-native-gesture-handler/lib/typescript/TouchEventType';

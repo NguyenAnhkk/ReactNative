@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import { useTheme } from './ThemeContext';
+import * as React from 'react';
 const SettingScreen: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const toggleTheme = () => {

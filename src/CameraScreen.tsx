@@ -1,7 +1,6 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
-  FlatList,
   Image,
   Linking,
   StyleSheet,
@@ -9,6 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import * as React from 'react';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import RNFS from 'react-native-fs';
 import {Button, Icon} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';

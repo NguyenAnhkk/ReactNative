@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, Text, Button, ActivityIndicator} from 'react-native';
-
+import * as React from 'react';
 import {Icon} from 'react-native-elements';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import Video from 'react-native-video';

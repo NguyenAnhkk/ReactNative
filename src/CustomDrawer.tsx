@@ -3,7 +3,6 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import React from 'react';
 import {
   Text,
   View,
@@ -11,6 +10,7 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from 'react-native';
+import * as React from 'react';
 import Drawer from 'react-native-drawer';
 import {Image} from '@rneui/themed';
 import LinearGradient from 'react-native-linear-gradient';

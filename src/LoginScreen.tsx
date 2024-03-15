@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
-
+import LottieView from 'lottie-react-native';
 import {Input, Image} from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Field, Formik} from 'formik';
@@ -15,7 +15,7 @@ import {
   signInWithPopup,
   Auth,
 } from 'firebase/auth';
-
+import * as React from 'react';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-toast-message';
 import {firebase} from '@react-native-firebase/firestore';
@@ -94,8 +94,7 @@ const LoginScreen: React.FC = () => {
     }
   };
   const handleOnPress = useCallback(async () => {
-    // await AsyncStorage.setItem('UserName', userName);
-    // await AsyncStorage.setItem('Password', passWord);
+
     if (checkSubmit()) {
       LoginWithEmailAndPassword(userName, passWord);
     } else {
@@ -141,7 +140,7 @@ const LoginScreen: React.FC = () => {
       console.error(error);
     }
   };
-
+  const [showAnimation, setShowAnimation] = useState(false);
   return (
     <SafeAreaView style={{flex: 1}}>
       <Formik
@@ -152,20 +151,18 @@ const LoginScreen: React.FC = () => {
         }}
         // validationSchema={SignupSchema}
       >
-        {({
-          errors,
-          touched,
-        }) => (
+        {({errors, touched}) => (
           <>
             <View style={styles.container}>
               <LinearGradient colors={['#f0a5d3', '#f5edf2']} style={{flex: 1}}>
-                <Text style={styles.imgText}>
-                  <Image
-                    borderRadius={50}
-                    style={{width: 50, height: 50}}
-                    source={require('../src/assets/react-native.jpg')}
-                  />
-                </Text>
+                  <View style={styles.animation}>
+                    <LottieView
+                      style={{flex: 1}}
+                      source={require('./assets/Animation - 1708940600395.json')}
+                      autoPlay
+                      loop
+                    />
+                  </View>
                 <Text style={styles.hitext}>ĐĂNG NHẬP</Text>
                 <Toast />
                 <Text style={styles.hellotext}></Text>
@@ -345,7 +342,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 50,
     fontWeight: 'bold',
-    paddingTop: 50,
+   
   },
   hellotext: {
     color: '#fff',
@@ -443,6 +440,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     top: 10,
   },
+  animation:{
+    height : 70,
+    aspectRatio :1,
+  }
 });
 export default LoginScreen;
 function alert(arg0: string) {

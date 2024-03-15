@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {Input, Image} from '@rneui/themed';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Icon} from 'react-native-elements';
@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawer from './CustomDrawer';
 import HomeScreen from './HomeScreen';
-
+import * as React from 'react';
 import ProfileScreen from './ProfileScreen';
 import SettingScreen from './SettingScreen';
 

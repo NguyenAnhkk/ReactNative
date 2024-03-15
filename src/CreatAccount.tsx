@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Input} from '@rneui/base';
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
   Keyboard,
   TextInput,
 } from 'react-native';
+import * as React from 'react';
 import {Icon} from 'react-native-elements';
 import {
   ScrollView,

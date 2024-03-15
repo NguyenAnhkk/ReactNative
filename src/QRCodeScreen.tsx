@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Alert, Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Clipboard from '@react-native-clipboard/clipboard';
+import * as React from 'react';
 const QRCodeScreen: React.FC = () => {
   const [data, setData] = useState('Nội dung QR');
   const copyToClipboard = () => {

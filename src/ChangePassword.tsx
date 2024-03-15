@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Text} from '@rneui/base';
-import React, {useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -8,6 +8,7 @@ import {
   View,
   KeyboardAvoidingView,
 } from 'react-native';
+import * as React from 'react';
 import {Icon, Input} from 'react-native-elements';
 import {SvgXml} from 'react-native-svg';
 import {ValidationError} from 'yup';

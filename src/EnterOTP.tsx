@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Text} from '@rneui/base';
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
+import * as React from 'react';
 import {Icon} from 'react-native-elements';
 import EnterOTPSVG from './assets/EnterOTPSVG';
 import {ScrollView} from 'react-native-gesture-handler';

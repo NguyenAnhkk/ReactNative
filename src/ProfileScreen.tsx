@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { useTheme } from './ThemeContext';
-import {
-  SafeAreaView,
-} from 'react-native-safe-area-context';
+import {useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {useTheme} from './ThemeContext';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {Icon} from 'react-native-elements';
+import * as React from 'react';
+import LottieView from 'lottie-react-native';
 const ProfileScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View  style={{flex: 1}}>
+      <View style={{flex: 1}}>
         <View style={styles.UserInforSection}>
           <View
             style={
-              {flexDirection: 'row'} /* Mặc định thì thẻ View nằm dọc , chỉnh để nằm ngang */
+              {
+                flexDirection: 'row',
+              } /* Mặc định thì thẻ View nằm dọc , chỉnh để nằm ngang */
             }>
             <View style={{marginLeft: 20, paddingTop: 20}}>
               <Text style={styles.title}>Nguyen Anh</Text>
@@ -31,22 +29,30 @@ const ProfileScreen: React.FC = () => {
             </Text>
           </View>
         </View>
-        <View style ={styles.Phone}>
-          <Icon name ={'phone'} type='material-community' size={20}/>
+        <View style={styles.Phone}>
+          <Icon name={'phone'} type="material-community" size={20} />
           <View>
             <Text style={{color: '#000', paddingLeft: 20, fontSize: 15}}>
               +84 337221906
             </Text>
           </View>
         </View>
-        <View style ={styles.Gmail}>
-        <Icon name ={'gmail'} type='material-community' size={20}/>
+        <View style={styles.Gmail}>
+          <Icon name={'gmail'} type="material-community" size={20} />
           <View>
             <Text style={{color: '#000', paddingLeft: 20, fontSize: 15}}>
               nguyenanhcry@gmail.com
             </Text>
           </View>
         </View>
+        
+        {/* <View style ={styles.animation}>
+          <LottieView style = {{flex : 1}}
+            source={require('./assets/Animation - 1708679420051.json')}
+            autoPlay
+            loop
+          />
+        </View> */}
       </View>
     </SafeAreaView>
   );
@@ -78,17 +84,21 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginTop: 20,
   },
-  Phone:{
+  Phone: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 40,
     marginTop: 20,
   },
-  Gmail:{
+  Gmail: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 40,
     marginTop: 20,
+  },
+  animation:{
+    height : 300,
+    aspectRatio :1,
   }
 });
 

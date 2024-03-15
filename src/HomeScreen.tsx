@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Input, Image} from '@rneui/themed';
 import {
   FlatList,
@@ -10,6 +10,7 @@ import {
   View,
   Alert,
 } from 'react-native';
+import * as React from 'react';
 import {Divider, Icon} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import LinearGradient from 'react-native-linear-gradient';

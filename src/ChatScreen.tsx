@@ -1,10 +1,11 @@
-import React, { useEffect, useState ,useCallback } from 'react';
+import { useEffect, useState ,useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Input, Image } from '@rneui/themed';
 import { Icon } from '@rneui/base';
 import { useNavigation, useRoute  } from '@react-navigation/native';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import firestore from '@react-native-firebase/firestore';
+import * as React from 'react';
 import { create } from 'react-test-renderer';
 const ChatScreen: React.FC = () => {
   const navigation = useNavigation()
