@@ -11,6 +11,7 @@ import {
   Keyboard,
   TextInput,
 } from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import * as React from 'react';
 import {Icon} from 'react-native-elements';
 import {

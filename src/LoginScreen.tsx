@@ -33,7 +33,7 @@ GoogleSignin.configure({
   webClientId:
     '49615532709-fc66fbc1v7ba1107816h6be26nuoleea.apps.googleusercontent.com',
 });
-const handleGoogleSignIn = async () => {
+async function handleGoogleSignIn(){
   try {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     const {idToken} = await GoogleSignin.signIn();
@@ -284,7 +284,7 @@ const LoginScreen: React.FC = () => {
                     <View style={{alignItems: 'center'}}>
                       <TouchableOpacity
                         style={styles.SignFb}
-                        onPress={onFacebookButtonPress}>
+                        onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}>
                         <View style={{flexDirection: 'row'}}>
                           <Icon name={'facebook'} size={25} color={'#247bed'} />
                           <Text
@@ -307,7 +307,7 @@ const LoginScreen: React.FC = () => {
                         }}
                         size={GoogleSigninButton.Size.Wide}
                         color={GoogleSigninButton.Color.Dark}
-                        onPress={handleGoogleSignIn}
+                        onPress={() => handleGoogleSignIn().then(() => console.log('Signed in with Google!'))}
                       />
                     </View>
                   </View>
